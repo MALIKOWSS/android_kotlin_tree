@@ -1,6 +1,5 @@
 package com.example.android_kotlin_two.ui.fragment
 
-import android.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.android_kotlin_two.databinding.FragmentFirstBinding
-import com.example.android_kotlin_two.ui.adapter.Adapter
+import com.example.android_kotlin_two.ui.adapter.RecyclerAdapter
+import com.example.android_kotlin_two.util.SharedPrefer
 import com.google.android.material.tabs.TabLayoutMediator
 
 
@@ -32,8 +32,7 @@ class FirstFragment : Fragment() {
         clickButton()
         viewPager()
         click()
-
-
+        cashSave()
         TabLayoutMediator(binding.ui, binding.viewPager) { it, it2 ->
         }.attach()
     }
@@ -41,15 +40,15 @@ class FirstFragment : Fragment() {
     private fun click() {
         binding.two.setOnClickListener {
             findNavController().navigate(com.example.android_kotlin_two.R.id.action_firstFragment2_to_homeFragment)
-
         }
     }
+
     private fun initialize() {
-        binding.viewPager.adapter = Adapter(this@FirstFragment)
+        binding.viewPager.adapter = RecyclerAdapter(this@FirstFragment)
     }
 
     private fun viewPager() {
-        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 when (position) {
                     0 -> {
@@ -72,11 +71,18 @@ class FirstFragment : Fragment() {
     }
 
     private fun clickButton() = with(binding.viewPager) {
-        binding.nextButton.setOnClickListener{
-            if (currentItem < 3){
+        binding.nextButton.setOnClickListener {
+            if (currentItem < 3) {
                 setCurrentItem(currentItem + 1, true)
-
+            }
         }
     }
+
+    private fun cashSave() {
+        if (SharedPrefer.isShows) {
+            SharedPrefer.isShows = false
+        } else {
+            findNavController().navigateUp()
+        }
     }
 }

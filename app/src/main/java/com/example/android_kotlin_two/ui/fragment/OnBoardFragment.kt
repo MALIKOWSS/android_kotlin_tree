@@ -50,6 +50,5 @@ class OnBoardFragment : Fragment() {
 
     companion object{
         const val ARG_ONBOARD_POSITION = "oBoard"
-
     }
 }
